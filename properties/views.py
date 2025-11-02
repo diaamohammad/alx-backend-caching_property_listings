@@ -18,3 +18,5 @@ def property_list(request):
     data = list(properties.values("title", "location", "price"))
     
     return JsonResponse(data, safe=False)
+
+return JsonResponse({
