@@ -26,3 +26,9 @@ def get_all_properties():
         logger.info("Cache hit: 'all_properties'. Serving from cache.")
         
     return queryset
+
+def get_redis_cache_metrics():, keyspace_hits, keyspace_misses
+
+if total_requests > 0 else 0
+
+logger.error
