@@ -1,22 +1,29 @@
-from django.shortcuts import render
 
-# Create your views here.
-from django.shortcuts import render
-from django.http import JsonResponse
-from .models import Property
-from django.views.decorators.cache import cache_page # استيراد cache_page
 
 # تطبيق الكاش لمدة 15 دقيقة (60 ثانية * 15)
-@cache_page(60 * 15)
+from django.shortcuts import render
+from django.http import JsonResponse
+# from .models import Property  <-- لم نعد بحاجة إليها مباشرة هنا
+from django.views.decorators.cache import cache_page
+
+# 1. استيراد الدالة الجديدة
+from .utils import get_all_properties 
+
+# @cache_page(60 * 15)  <-- (ملاحظة)
+# بما أننا سنستخدم low-level cache، لم نعد بحاجة لـ @cache_page هنا
+# يمكنك تركها أو حذفها، لكن المنطق الآن يتم داخل get_all_properties
+# الأفضل حذفها ليعتمد على الكاش الجديد
+# @cache_page(60 * 15) <-- قم بحذف أو تعليق هذا السطر
+
 def property_list(request):
     """
     View to list all properties.
-    The response is cached for 15 minutes.
+    Uses low-level caching via get_all_properties().
     """
-    properties = Property.objects.all()
+    # 2. استخدام الدالة الجديدة
+    properties = get_all_properties()
+    
     # تحويل البيانات إلى قائمة بسيطة لإرسالها كـ JSON
     data = list(properties.values("title", "location", "price"))
     
     return JsonResponse(data, safe=False)
-
-return JsonResponse({
