@@ -16,3 +16,5 @@ services:
     image: redis:latest
     ports:
       - "6379:6379" # ربط البورت على جهازك
+
+ postgres_data", "redis_data     
